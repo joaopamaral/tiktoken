@@ -2,7 +2,7 @@
 import collections
 from typing import Optional
 
-import regex
+import re
 
 import tiktoken
 
@@ -16,7 +16,7 @@ class SimpleBytePairEncoding:
         self.mergeable_ranks = mergeable_ranks
 
         self._decoder = {token: token_bytes for token_bytes, token in mergeable_ranks.items()}
-        self._pat = regex.compile(pat_str)
+        self._pat = re.compile(pat_str)
 
     def encode(self, text: str, visualise: Optional[str] = "colour") -> list[int]:
         """Encodes a string into tokens.
@@ -131,7 +131,7 @@ def bpe_train(
     #     [b' ', b'w', b'o', b'r', b'l', b'd']
     # ]
     words: list[list[bytes]] = [
-        [bytes([b]) for b in word.encode("utf-8")] for word in regex.findall(pat_str, data)
+        [bytes([b]) for b in word.encode("utf-8")] for word in re.findall(pat_str, data)
     ]
 
     # Now, use our data to figure out which merges we should make
